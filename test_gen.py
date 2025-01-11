@@ -21,8 +21,8 @@ def main():
         os.mkdir(DIRECTORY_NAME)
     
     for i in range(number_of_files_generated):
-        N = random.randint(1, 10000)
-        T = random.randint(1, 1000000)
+        N = random.randint(1, 1000)
+        T = random.randint(1, 100000)
         file_name = f"./{DIRECTORY_NAME}/random_file{i}.txt"
         with open(file_name, "w") as file:
             print(N, T, file = file)
