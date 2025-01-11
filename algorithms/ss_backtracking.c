@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
         exit(1);
     }
     char path[100];
-    strcpy(path, "../tests/");
+    strcpy(path, "../");
     strcat(path, argv[1]);
     FILE *file = fopen(path, "r");
     if (!file) {
