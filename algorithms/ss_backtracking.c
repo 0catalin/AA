@@ -6,43 +6,45 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-void print_subset(int subset[], int subset_size) {
-    printf("Subset: ");
+void print_subset(int *subset, int subset_size) {
+    printf("Subset found: ");
     int total_sum = 0;
     for (int i = 0; i < subset_size; i++) {
         printf("%d ", subset[i]);
         total_sum += subset[i];
     }
-    printf("\n");
-    printf("TOTAL SUM!!!!!!: %d\nHAHAHAHAHAHAHAHA\n", total_sum);
+    printf("\nChecking sum of subset: %d\n", total_sum);
 }
 
-bool backtrack(int nums[], int n, int target, int current_sum, int subset[], int subset_size, int i) {
-    
-    if (current_sum == target) {
+bool backtrack(int *values_arr, int nr_values, int target_sum, int current_sum, int *subset, int subset_size, int value_index) {
+    // If we have found a subset with the target sum,
+    // print it and return true.
+    if (current_sum == target_sum) {
         print_subset(subset, subset_size);
         return true;
     }
-    
-    if (i == n) {
+    // If we have reached the end of the array, return false.
+    if (value_index == nr_values) {
         return false;
     }
-    
-    subset[subset_size] = nums[i];
-    if (backtrack(nums, n, target, current_sum + nums[i], subset, subset_size + 1, i + 1)) {
-        return true;
-    }
-    
-    if (backtrack(nums, n, target, current_sum, subset, subset_size, i + 1)) {
-        return true;
-    }
-    
-    return false;
+    // Add current element to subset array
+    subset[subset_size] = values_arr[value_index];
+    // Call recursively for both the inclusion and exclusion case:
+    //  1. When including the current element, we increase the subset size to 
+    //     consider the last added element (and add it to the current sum).
+    //  2. When excluding the current element, subset size is left the same, so
+    //     that the current element will be overwritten for the next call (and the
+    //     current sum is left the same).
+    return backtrack(values_arr, nr_values, target_sum, current_sum + values_arr[value_index], subset, subset_size + 1, value_index + 1) ||
+            backtrack(values_arr, nr_values, target_sum, current_sum, subset, subset_size, value_index + 1);
 }
 
-bool subset_sum(int nums[], int n, int target) {
-    int subset[n];
-    return backtrack(nums, n, target, 0, subset, 0, 0);
+bool subset_sum(int *values_arr, int nr_values, int target_sum) {
+    int *subset = malloc(nr_values * sizeof(int));
+    bool ret = backtrack(values_arr, nr_values, target_sum, 0, subset, 0, 0);
+    
+    free(subset);
+    return ret;
 }
 
 int main(int argc, char **argv) {
@@ -72,6 +74,7 @@ int main(int argc, char **argv) {
     if (!subset_sum(values_arr, nr_values, target_sum)) {
         printf("No subset with sum %d found.\n", target_sum);
     }
+    free(values_arr);
     fclose(file);
     return 0;
 }
