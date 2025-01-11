@@ -3,7 +3,7 @@
 #include <string.h>
 #include "ss_backtracking.h"
 
-#include <stdio.h>
+
 #include <stdbool.h>
 
 void print_subset(int *subset, int subset_size) {
