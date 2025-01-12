@@ -111,10 +111,22 @@ int main(int argc, char **argv) {
 
 
 
-    fscanf(file, "%d %d", &nr_values, &target_sum);
+    if (fscanf(file, "%d %d", &nr_values, &target_sum) != 2) {
+        fprintf(stderr, "Error: Failed to read `nr_values` and `target_sum` from the file.\n");
+        fclose(file);
+        if (values_arr)
+            free(values_arr);
+        exit(1);
+    }
     values_arr = malloc(nr_values * sizeof(int));
     for (int i = 0; i < nr_values; ++i) {
-        fscanf(file, "%d", &values_arr[i]);
+        if (values_arr != NULL && fscanf(file, "%d", &values_arr[i]) != 1) {
+            fprintf(stderr, "Error: Failed to read `values_arr[i]` from the file.\n");
+            fclose(file);
+            if (values_arr)
+                free(values_arr);
+            exit(1);
+        }
     }
 
     //for (int i = 0; i < nr_values; i++) {
@@ -131,7 +143,8 @@ int main(int argc, char **argv) {
     print_subset(result, subset_size, target_sum);
 
     free(result);
-    free(values_arr);
+    if (values_arr)
+        free(values_arr);
     fclose(file);
     return 0;
 }

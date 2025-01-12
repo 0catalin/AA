@@ -27,7 +27,7 @@ bool backtrack(int *values_arr, int nr_values, int target_sum, int current_sum, 
     if (current_sum > target_sum) {
         return false;
     }
-    
+
     // If we have reached the end of the array, return false.
     if (value_index == nr_values) {
         return false;
@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
     int nr_values, target_sum;
     int *values_arr;
     if (argc != 2) {
-        printf("Must introduce 2 arguments!");
+        printf("Must introduce 1 argument!");
         exit(1);
     }
     char path[100];
@@ -67,10 +67,22 @@ int main(int argc, char **argv) {
         printf("File not found!");
         exit(1);
     }
-    fscanf(file, "%d %d", &nr_values, &target_sum);
+    if (fscanf(file, "%d %d", &nr_values, &target_sum) != 2) {
+        fprintf(stderr, "Error: Failed to read `nr_values` and `target_sum` from the file.\n");
+        fclose(file);
+        if (values_arr)
+            free(values_arr);
+        exit(1);
+    }
     values_arr = malloc(nr_values * sizeof(int));
     for (int i = 0; i < nr_values; ++i) {
-        fscanf(file, "%d", &values_arr[i]);
+        if (values_arr != NULL && fscanf(file, "%d", &values_arr[i]) != 1) {
+            fprintf(stderr, "Error: Failed to read `values_arr[i]` from the file.\n");
+            fclose(file);
+            if (values_arr)
+                free(values_arr);
+            exit(1);
+        }
     }
     //printf("Number of values: %d\nTarget sum: %d\n", nr_values, target_sum);
     //for (int i = 0; i < nr_values; ++i) {
@@ -79,7 +91,8 @@ int main(int argc, char **argv) {
     if (!subset_sum(values_arr, nr_values, target_sum)) {
         printf("No subset with sum %d found.\n", target_sum);
     }
-    free(values_arr);
+    if (values_arr)
+        free(values_arr);
     fclose(file);
     return 0;
 }
