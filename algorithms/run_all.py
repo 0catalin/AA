@@ -4,6 +4,8 @@ from pathlib import Path
 import subprocess
 import time
 import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 positive_directories = ["../big_number_tests_positive", "../positive_tests", "../small_number_tests_positive"]
@@ -22,6 +24,45 @@ executables_dict = {"./ss_dp" : ss_dp_directories, "./ss_greedy" : ss_greedy_dir
 MONTE_CARLO_ITERATIONS = 100000
 
 results_dic = {}
+
+
+
+def plot_and_save_image(data):
+    for i, (file_name, values) in enumerate(data.items()):
+        if i >= 5:
+            break
+        iterations = [v['iterations'] for v in values.values()]
+        errors = [v['error'] for v in values.values()]
+
+
+        iterations = np.array(iterations)
+        errors = np.array(errors, dtype=float)
+
+
+        sorted_indices = np.argsort(iterations)
+        iterations = iterations[sorted_indices]
+        errors = errors[sorted_indices]
+
+        plt.plot(iterations, errors, marker='o', label=file_name)
+
+
+        plt.xlabel('Iterations')
+        plt.ylabel('Error')
+        plt.title(f'Monte Carlo Simulation - Plot {i}')
+
+
+        plt.legend()
+
+
+        plt.ylim(min(errors) - 100, max(errors) + 1000)
+
+
+        # plt.yscale('log')
+
+        plt.savefig(f'plot_{i}.png', format='png', bbox_inches='tight')
+
+
+        plt.close()
 
 
 
@@ -56,19 +97,23 @@ def main():
             directory_path = Path(directory)
             files = sorted([file.name for file in directory_path.iterdir()], key=lambda x: extract_number(x)) # list of sorted files from each directory(strings)
             for file in files:
-                if file not in results_dic:
+                if file not in results_dic and (file == "big_number_file0.txt" or file == "positive_file0.txt" or file == "random_file0.txt" or file == "small_number_file0.txt" or file == "small_number_positive_file0.txt"):
                     results_dic[file] = {}
-                if executable == "./ss_monte_carlo":
-                    start_time = time.time()
-                    result = subprocess.run([executable, (directory[3:] + "/" + file), str(MONTE_CARLO_ITERATIONS)], capture_output=True, text=True, check=True)
-                    end_time = time.time() - start_time
-                    results_dic[file][executable[5:]] = end_time
-                else:
-                    start_time = time.time()
-                    result = subprocess.run([executable, (directory[3:] + "/" + file)], capture_output=True, text=True, check=True)
-                    end_time = time.time() - start_time
-                    results_dic[file][executable[5:]] = end_time
-    generate_table(results_dic)
+                if executable == "./ss_monte_carlo" and files[0] == file and file != "impossible_file0.txt" and file != "big_number_positive_file0.txt":
+                    #start_time = time.time()
+                    for i in range(1000, 96000, 5000):
+                        result = subprocess.run([executable, (directory[3:] + "/" + file), str(i)], capture_output=True, text=True, check=True)
+                    #end_time = time.time() - start_time
+                        value_list = result.stdout.strip().split(" ")
+                        results_dic[file][str((i - 1000) / 5000) + "."] = {"iterations" : i, "error" : value_list[1]}
+    plot_and_save_image(results_dic)
+                #else:
+                #    start_time = time.time()
+                #    result = subprocess.run([executable, (directory[3:] + "/" + file)], capture_output=True, text=True, check=True)
+                ##    end_time = time.time() - start_time
+                #    results_dic[file][executable[5:]] = end_time
+    #generate_table(results_dic)
+    print(results_dic)
 
 
 
