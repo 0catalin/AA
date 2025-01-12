@@ -27,7 +27,7 @@ def main():
         with open(file_name, "w") as file:
             print(N, T, file = file)
             for _ in range(N):
-                print(random.randint(100000, 1000000), file = file)
+                print(random.randint(10000, 1000000), file = file)
 
                 
 
