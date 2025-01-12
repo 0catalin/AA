@@ -49,7 +49,7 @@ bool subset_sum(int *values_arr, int nr_values, int target_sum) {
 
 int main(int argc, char **argv) {
     int nr_values, target_sum;
-    int *values_arr;
+    int *values_arr = NULL;
     if (argc != 2) {
         printf("Must introduce 1 argument!");
         exit(1);
@@ -79,10 +79,6 @@ int main(int argc, char **argv) {
             exit(1);
         }
     }
-    //printf("Number of values: %d\nTarget sum: %d\n", nr_values, target_sum);
-    //for (int i = 0; i < nr_values; ++i) {
-    //    printf("%d\n", values_arr[i]);
-    //}
     if (!subset_sum(values_arr, nr_values, target_sum)) {
         printf("No subset with sum %d found.\n", target_sum);
     }

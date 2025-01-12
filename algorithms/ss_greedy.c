@@ -55,7 +55,7 @@ void print_subset(int *subset, int subset_size, int target_sum) {
 
 int main(int argc, char **argv) {
     int nr_values, target_sum;
-    int *values_arr;
+    int *values_arr = NULL;
     if (argc != 2) {
         printf("Must introduce 1 argument!");
         exit(1);

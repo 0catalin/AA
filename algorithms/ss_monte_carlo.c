@@ -75,7 +75,7 @@ int* montecarlo(int nr_values, int *values_arr, int number_of_iterations, int ta
 int main(int argc, char **argv) {
     srand((unsigned int)clock());
     int nr_values, target_sum;
-    int *values_arr;
+    int *values_arr = NULL;
     if (argc != 3) {
         printf("Must introduce 2 arguments!\n");
         exit(1);
