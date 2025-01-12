@@ -73,7 +73,7 @@ int* montecarlo(int nr_values, int *values_arr, int number_of_iterations, int ta
 
 
 int main(int argc, char **argv) {
-    srand((unsigned int)time(NULL));
+    srand((unsigned int)clock());
     int nr_values, target_sum;
     int *values_arr;
     if (argc != 3) {
@@ -107,7 +107,7 @@ int main(int argc, char **argv) {
         printf("Number lower than 1 you are crazy!\n");
         exit(1);
     }
-    printf("Number of iterations is %d\n", number_of_iterations);
+    //printf("Number of iterations is %d\n", number_of_iterations);
 
 
 
@@ -117,14 +117,14 @@ int main(int argc, char **argv) {
         fscanf(file, "%d", &values_arr[i]);
     }
 
-    for (int i = 0; i < nr_values; i++) {
-        if (take_number_or_not()) {
-            printf("%d ", values_arr[i]);
-        }
-    }
+    //for (int i = 0; i < nr_values; i++) {
+    //    if (take_number_or_not()) {
+    //        printf("%d ", values_arr[i]);
+    //    }
+    //}
     printf("\n");
 
-    int success_flag = 0, subset_size = 0;
+    int subset_size = 0;
     int* result = montecarlo(nr_values, values_arr, number_of_iterations, target_sum, &subset_size);
 
     
