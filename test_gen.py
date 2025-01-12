@@ -3,7 +3,7 @@ import sys
 import os
 import shutil
 
-DIRECTORY_NAME = "tests"
+DIRECTORY_NAME = "big_number_tests_positive"
 
 
 def main():
@@ -23,11 +23,13 @@ def main():
     for i in range(number_of_files_generated):
         N = random.randint(1, 1000)
         T = random.randint(1, 100000)
-        file_name = f"./{DIRECTORY_NAME}/random_file{i}.txt"
+        file_name = f"./{DIRECTORY_NAME}/big_number_positive_file{i}.txt"
         with open(file_name, "w") as file:
             print(N, T, file = file)
             for _ in range(N):
-                print(random.randint(-1000000, 1000000), file = file)
+                print(random.randint(100000, 1000000), file = file)
+
+                
 
 
 
