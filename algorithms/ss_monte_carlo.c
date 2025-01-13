@@ -14,15 +14,15 @@ int abs_value(int number) {
 }
 
 void print_subset(int *subset, int subset_size, int target_sum) {
-    //printf("Subset found: ");
+    printf("Subset found: ");
     int total_sum = 0;
     for (int i = 0; i < subset_size; i++) {
-    //    printf("%d ", subset[i]);
+        printf("%d ", subset[i]);
         total_sum += subset[i];
     }
-    //printf("\nChecking sum of subset: %d\n", total_sum);
-    printf("%d %d", target_sum, abs_value(total_sum - target_sum));
-    //printf("Sum difference: %d\n", abs_value(total_sum - target_sum));
+    printf("\nChecking sum of subset: %d\n", total_sum);
+    printf("%d", abs_value(total_sum - target_sum));
+    printf("Sum difference: %d\n", abs_value(total_sum - target_sum));
 }
 
 
@@ -129,12 +129,12 @@ int main(int argc, char **argv) {
         }
     }
 
-    //for (int i = 0; i < nr_values; i++) {
-    //    if (take_number_or_not()) {
-    //        printf("%d ", values_arr[i]);
-    //    }
-    //}
-    //printf("\n");
+    for (int i = 0; i < nr_values; i++) {
+       if (take_number_or_not()) {
+           printf("%d ", values_arr[i]);
+       }
+    }
+    printf("\n");
 
     int subset_size = 0;
     int* result = montecarlo(nr_values, values_arr, number_of_iterations, target_sum, &subset_size);

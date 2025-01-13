@@ -48,7 +48,7 @@ void print_subset(int *subset, int subset_size, int target_sum) {
     }
     printf("\nChecking sum of subset: %d\n", total_sum);
     printf("Printing target sum: %d\n", target_sum);
-    printf("Sum difference: %d\n", abs_value(total_sum - target_sum));
+    printf("%d\n", abs_value(total_sum - target_sum));
 }
 
 
